@@ -14,7 +14,6 @@ import moe.shizuku.manager.adb.AdbProtocol.A_STLS
 import moe.shizuku.manager.adb.AdbProtocol.A_STLS_VERSION
 import moe.shizuku.manager.adb.AdbProtocol.A_VERSION
 import moe.shizuku.manager.adb.AdbProtocol.A_WRTE
-import moe.shizuku.manager.ktx.logd
 import rikka.core.util.BuildUtils
 import java.io.Closeable
 import java.io.DataInputStream
@@ -109,6 +108,34 @@ class AdbClient(private val host: String, private val port: Int, private val key
             }
             else -> {
                 error("not A_OKAY or A_CLSE")
+            }
+        }
+    }
+
+    fun root(): Boolean {
+        val localId = 1
+        write(A_OPEN, localId, 0, "root:")
+
+        val message = read()
+        return when (message.command) {
+            A_OKAY -> {
+                Log.d(TAG, "ADB daemon restarting with root privileges")
+                val closeMessage = read()
+                if (closeMessage.command == A_CLSE) {
+                    write(A_CLSE, localId, closeMessage.arg0)
+                }
+                true
+            }
+
+            A_CLSE -> {
+                Log.d(TAG, "Root request was rejected")
+                write(A_CLSE, localId, message.arg0)
+                false
+            }
+
+            else -> {
+                Log.e(TAG, "Unexpected response to root request: ${message.command}")
+                false
             }
         }
     }

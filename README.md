@@ -1,26 +1,31 @@
 # Shizuku
 
-## Disclaimer
+## 免责声明
 
-THIS IS A **FORK** OF SHIZUKU. IF YOU'RE LOOKING FOR SHIZUKU FROM RIKKA, THIS IS NOT THE PLACE.
-VISIT THE OFFICIAL REPO [**_HERE_**](https://github.com/RikkaApps/Shizuku)
+此为 Shizuku 的 **分叉版本**。若您需寻找 Rikka 开发的官方 Shizuku，此处并非正确渠道。  
+请访问 [**_官方仓库_**](https://github.com/RikkaApps/Shizuku)
 
-### Usage of auto-start
+### 本仓库的变更
 
-- Follow the instructions for setting up Shizuku through Wireless ADB by pairing the app
-  - From the `Settings`, enable `Start on boot (wireless ADB)`
-    - `WRITE_SECURE_SETTINGS` permission needs to be granted prior to enabling this setting and this can be enabled either by `rish` or by connecting the device to the machine
-    - Run the following command:
-      ```bash
-      adb shell pm grant moe.shizuku.privileged.api android.permission.WRITE_SECURE_SETTINGS
-      ```
+- 随机化 `/data/local/tmp/shizuku` 目录名称
+- 自动删除 `/data/local/tmp/shizuku_starter` 文件
+- 在 userdebug ROM 上启用 ADB root 权限
+- 支持非 Root 设备自启动
+- 通过 GitHub Actions 自动构建并发布 APK 至 GitHub Releases
 
-> [!WARNING]
-> `WRITE_SECURE_SETTINGS` is a very sensitive permission and enable it only if you know what you're doing.
-> The developer of this fork is not responsible for whatever may happen later on.
+### 自启动功能用法
+
+1. 按照无线 ADB 配对流程配置 Shizuku
+2. 在 `设置` 中启用 `开机启动（无线调试）`
+   - 启用前需先授予 `WRITE_SECURE_SETTINGS` 权限（可通过 `rish` 或连接电脑调试完成）
+   - 执行以下命令 `adb shell pm grant moe.shizuku.privileged.api android.permission.WRITE_SECURE_SETTINGS`
+
+
+> [!CAUTION]
+> `WRITE_SECURE_SETTINGS` 为高危权限，仅建议明确风险后启用。开发者对后续可能产生的后果不承担责任。
 
 > [!NOTE]
-> Auto restart service is untested
+> 服务自动重启功能未经充分测试
 
 ## Background
 
