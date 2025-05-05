@@ -84,6 +84,10 @@
     <string name="home_root_description_sui"><![CDATA[如果您正在使用 Magisk，可以尝试 %1$s。对于 root 用户，它将最终取代 Shizuku。注意，已有的应用需要一点点修改来使用 %2$s。]]></string>
     <string name="settings_start_on_boot_summary">对于已 root 设备，Shizuku 可以开机启动</string>
     <string name="settings_start_on_boot">开机启动（root）</string>
+    <string name="settings_start_on_boot_wireless_summary">对于未 root 设备，Shizuku 可以通过无线调试开机启动</string>
+    <string name="settings_start_on_boot_wireless">开机自启（无线调试）</string>
+    <string name="settings_adb_root">ADB root（root 调试）</string>
+    <string name="settings_adb_root_summary">对基于 userdebug 构建的系统，Shizuku 可以先将 adbd 重启到 root 模式，然后启动</string>
     <string name="permission_warning_template"><![CDATA[要允许<b>%1$s</b>%2$s吗？]]></string>
     <string name="grant_dialog_button_allow_always">始终允许</string>
     <string name="grant_dialog_button_deny">拒绝</string>
