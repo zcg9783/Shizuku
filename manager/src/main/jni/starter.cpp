@@ -20,6 +20,11 @@
 #include "cgroup.h"
 #include "logging.h"
 
+#include <vector>
+#include <string>
+#include <regex>
+#include <random>
+
 #ifdef DEBUG
 #define JAVA_DEBUGGABLE
 #endif

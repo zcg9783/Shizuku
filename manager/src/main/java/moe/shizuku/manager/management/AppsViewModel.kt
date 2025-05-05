@@ -16,7 +16,6 @@ import moe.shizuku.manager.authorization.AuthorizationManager
 import rikka.lifecycle.Resource
 import rikka.lifecycle.activitySharedViewModels
 import rikka.lifecycle.sharedViewModels
-import java.util.*
 
 @MainThread
 fun ComponentActivity.appsViewModel() = sharedViewModels { AppsViewModel(this) }
@@ -39,11 +38,11 @@ class AppsViewModel(context: Context) : ViewModel() {
                 var count = 0
                 for (pi in AuthorizationManager.getPackages()) {
                     list.add(pi)
-                    if (AuthorizationManager.granted(pi.packageName, pi.applicationInfo!!.uid)) count++
+                    if (AuthorizationManager.granted(pi.packageName, pi.applicationInfo?.uid?:-1)) count++
                 }
                 _packages.postValue(Resource.success(list))
                 _grantedCount.postValue(Resource.success(count))
-            } catch (e: CancellationException) {
+            } catch (_: CancellationException) {
 
             } catch (e: Throwable) {
                 _packages.postValue(Resource.error(e, null))
@@ -61,11 +60,11 @@ class AppsViewModel(context: Context) : ViewModel() {
                     list.add(pi)
                     if (AuthorizationManager.granted(
                             pi.packageName,
-                            pi.applicationInfo!!.uid
+                            pi.applicationInfo?.uid?:-1
                         )
                     ) packages.add(pi.packageName)
                 }
-            } catch (e: CancellationException) {
+            } catch (_: CancellationException) {
 
             } catch (e: Throwable) {
                 _packages.postValue(Resource.error(e, null))
