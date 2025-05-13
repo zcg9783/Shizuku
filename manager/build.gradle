@@ -62,7 +62,7 @@ android {
     lint {
         checkReleaseBuilds false
     }
-    ndkVersion "28.1.13356709"
+    ndkVersion "27.2.12479018"
 }
 
 autoResConfig {
