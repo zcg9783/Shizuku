@@ -1,9 +1,16 @@
 package moe.shizuku.manager.adb
 
 import android.annotation.TargetApi
-import android.app.*
+import android.app.ForegroundServiceStartNotAllowedException
+import android.app.Notification
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.app.PendingIntent
+import android.app.RemoteInput
+import android.app.Service
 import android.content.Context
 import android.content.Intent
+import android.content.pm.ServiceInfo.FOREGROUND_SERVICE_TYPE_DATA_SYNC
 import android.os.Build
 import android.os.Handler
 import android.os.IBinder
@@ -106,7 +113,7 @@ class AdbPairingService : Service() {
         }
         if (notification != null) {
             try {
-                startForeground(notificationId, notification)
+                startForeground(notificationId, notification, FOREGROUND_SERVICE_TYPE_DATA_SYNC)
             } catch (e: Throwable) {
                 Log.e(tag, "startForeground failed", e)
 
