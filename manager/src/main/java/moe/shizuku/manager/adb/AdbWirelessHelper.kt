@@ -10,7 +10,9 @@ import android.util.Log
 import android.widget.Toast
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import moe.shizuku.manager.AppConstants
 import moe.shizuku.manager.BuildConfig
 import moe.shizuku.manager.ShizukuSettings
@@ -25,6 +27,24 @@ class AdbWirelessHelper {
     fun validateThenEnableWirelessAdb(contentResolver: ContentResolver, context: Context): Boolean {
         val connectivityManager =
             context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+
+        val timeoutMs = 15_000L
+        val intervalMs = 500L
+        var elapsed = 0L
+
+        runBlocking {
+            while (elapsed < timeoutMs) {
+                val networkCapabilities =
+                    connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork)
+                if (networkCapabilities != null && networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)) {
+                    enableWirelessADB(contentResolver, context)
+                    return@runBlocking
+                }
+                delay(intervalMs)
+                elapsed += intervalMs
+            }
+        }
+
         val networkCapabilities =
             connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork)
         if (networkCapabilities != null && networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)) {
