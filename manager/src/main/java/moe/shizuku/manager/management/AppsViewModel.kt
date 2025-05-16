@@ -64,6 +64,7 @@ class AppsViewModel(context: Context) : ViewModel() {
                         )
                     ) packages.add(pi.packageName)
                 }
+                _grantedCount.postValue(Resource.success(packages.size))
             } catch (_: CancellationException) {
 
             } catch (e: Throwable) {
