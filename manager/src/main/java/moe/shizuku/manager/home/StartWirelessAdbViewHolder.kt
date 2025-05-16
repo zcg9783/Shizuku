@@ -13,20 +13,16 @@ import androidx.fragment.app.FragmentActivity
 import moe.shizuku.manager.Helps
 import moe.shizuku.manager.R
 import moe.shizuku.manager.adb.AdbPairingTutorialActivity
-import moe.shizuku.manager.adb.AdbWirelessHelper
 import moe.shizuku.manager.databinding.HomeItemContainerBinding
 import moe.shizuku.manager.databinding.HomeStartWirelessAdbBinding
 import moe.shizuku.manager.ktx.toHtml
 import moe.shizuku.manager.utils.CustomTabsHelper
-import moe.shizuku.manager.utils.EnvironmentUtils
 import rikka.core.content.asActivity
 import rikka.html.text.HtmlCompat
 import rikka.recyclerview.BaseViewHolder
 
 class StartWirelessAdbViewHolder(binding: HomeStartWirelessAdbBinding, root: View) :
     BaseViewHolder<Any?>(root) {
-
-    private val adbWirelessHelper = AdbWirelessHelper()
 
     companion object {
         val CREATOR = Creator<Any> { inflater: LayoutInflater, parent: ViewGroup? ->
@@ -69,13 +65,7 @@ class StartWirelessAdbViewHolder(binding: HomeStartWirelessAdbBinding, root: Vie
             return
         }
 
-        val port = EnvironmentUtils.getAdbTcpPort()
-        if (port > 0) {
-            val host = "127.0.0.1"
-            adbWirelessHelper.launchStarterActivity(context, host, port)
-        } else {
-            WadbNotEnabledDialogFragment().show(context.asActivity<FragmentActivity>().supportFragmentManager)
-        }
+        WadbNotEnabledDialogFragment().show(context.asActivity<FragmentActivity>().supportFragmentManager)
     }
 
     @RequiresApi(Build.VERSION_CODES.R)
