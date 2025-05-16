@@ -17,6 +17,7 @@ import moe.shizuku.manager.AppConstants
 import moe.shizuku.manager.BuildConfig
 import moe.shizuku.manager.ShizukuSettings
 import moe.shizuku.manager.ShizukuSettings.ADB_ROOT
+import moe.shizuku.manager.ShizukuSettings.TCPIP_PORT
 import moe.shizuku.manager.starter.Starter
 import moe.shizuku.manager.starter.StarterActivity
 
@@ -24,7 +25,11 @@ class AdbWirelessHelper {
 
     private val adbWifiKey: String = "adb_wifi_enabled"
 
-    fun validateThenEnableWirelessAdb(contentResolver: ContentResolver, context: Context, wait: Boolean = false): Boolean {
+    fun validateThenEnableWirelessAdb(
+        contentResolver: ContentResolver,
+        context: Context,
+        wait: Boolean = false
+    ): Boolean {
         val connectivityManager =
             context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
 
@@ -99,13 +104,40 @@ class AdbWirelessHelper {
         AdbClient(host, port, key).use { client ->
             client.connect()
 
-            val rootExecution = if (client.root()) "ADB root command executed successfully."
+            val rootExecution = if (client.root()) "ADB root command executed successfully.\n"
             else "ADB root command failed.\n"
 
             commandOutput.append(rootExecution).append("\n")
             onOutput(commandOutput.toString())
             Log.d(AppConstants.TAG, "Shizuku start output chunk: $rootExecution")
             return rootExecution.contains("successfully")
+        }
+    }
+
+    private fun changeTcpipPortIfNeeded(
+        host: String,
+        port: Int,
+        newPort: Int,
+        key: AdbKey,
+        commandOutput: StringBuilder,
+        onOutput: (String) -> Unit
+    ): Boolean {
+        if (newPort < 1 || newPort > 65535) {
+            Log.w(AppConstants.TAG, "Invalid TCP/IP port: $newPort")
+            return false
+        }
+
+        AdbClient(host, port, key).use { client ->
+            client.connect()
+
+            val tcpipExecution =
+                if (client.tcpip(newPort)) "ADB tcpip command executed successfully.\n"
+                else "ADB tcpip command failed.\n"
+
+            commandOutput.append(tcpipExecution).append("\n")
+            onOutput(commandOutput.toString())
+            Log.d(AppConstants.TAG, "Shizuku start output chunk: $tcpipExecution")
+            return tcpipExecution.contains("successfully")
         }
     }
 
@@ -136,8 +168,32 @@ class AdbWirelessHelper {
                 val commandOutput = StringBuilder()
 
                 executeAdbRootIfNeeded(host, port, key, commandOutput, onOutput)
+                var newPort: Int = -1
+                ShizukuSettings.getPreferences().getString(TCPIP_PORT, "").let {
+                    if (it.isNullOrEmpty())
+                        true
+                    else try {
+                        newPort = it.toInt()
+                        false
+                    } catch (_: NumberFormatException) {
+                        true
+                    }
+                }
+                val finalPort =
+                    if (changeTcpipPortIfNeeded(
+                            host,
+                            port,
+                            newPort,
+                            key,
+                            commandOutput,
+                            onOutput
+                        )
+                    ) {
+                        Thread.sleep(2000)
+                        newPort
+                    } else port
 
-                AdbClient(host, port, key).use { client ->
+                AdbClient(host, finalPort, key).use { client ->
                     try {
                         client.connect()
                         Log.i(

@@ -140,6 +140,34 @@ class AdbClient(private val host: String, private val port: Int, private val key
         }
     }
 
+    fun tcpip(port: Int): Boolean {
+        val localId = 1
+        write(A_OPEN, localId, 0, "tcpip:$port")
+
+        val message = read()
+        return when (message.command) {
+            A_OKAY -> {
+                Log.d(TAG, "ADB daemon restarting in TCP mode port: $port")
+                val closeMessage = read()
+                if (closeMessage.command == A_CLSE) {
+                    write(A_CLSE, localId, closeMessage.arg0)
+                }
+                true
+            }
+
+            A_CLSE -> {
+                Log.d(TAG, "Change TCP/IP port request was rejected")
+                write(A_CLSE, localId, message.arg0)
+                false
+            }
+
+            else -> {
+                Log.e(TAG, "Unexpected response to change TCP/IP port request: ${message.command}")
+                false
+            }
+        }
+    }
+
     private fun write(command: Int, arg0: Int, arg1: Int, data: ByteArray? = null) = write(AdbMessage(command, arg0, arg1, data))
 
     private fun write(command: Int, arg0: Int, arg1: Int, data: String) = write(AdbMessage(command, arg0, arg1, data))

@@ -20,6 +20,11 @@
             android:summary="@string/settings_adb_root_summary"
             android:title="@string/settings_adb_root" />
 
+        <EditTextPreference
+            android:key="tcpip_port"
+            android:summary="@string/settings_tcpip_port_summary"
+            android:title="@string/settings_tcpip_port" />
+
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/settings_language">
