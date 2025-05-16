@@ -65,7 +65,7 @@ class BootCompleteReceiver : BroadcastReceiver() {
 
                 try {
                     val wirelessAdbStatus = adbWirelessHelper.validateThenEnableWirelessAdb(
-                        context.contentResolver, context
+                        context.contentResolver, context, true
                     )
                     if (wirelessAdbStatus) {
                         Starter.writeSdcardFiles(context)

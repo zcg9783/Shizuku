@@ -24,24 +24,29 @@ class AdbWirelessHelper {
 
     private val adbWifiKey: String = "adb_wifi_enabled"
 
-    fun validateThenEnableWirelessAdb(contentResolver: ContentResolver, context: Context): Boolean {
+    fun validateThenEnableWirelessAdb(contentResolver: ContentResolver, context: Context, wait: Boolean = false): Boolean {
         val connectivityManager =
             context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
 
-        val timeoutMs = 15_000L
-        val intervalMs = 500L
-        var elapsed = 0L
+        if (wait) {
+            val timeoutMs = 15_000L
+            val intervalMs = 500L
+            var elapsed = 0L
 
-        runBlocking {
-            while (elapsed < timeoutMs) {
-                val networkCapabilities =
-                    connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork)
-                if (networkCapabilities != null && networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)) {
-                    enableWirelessADB(contentResolver, context)
-                    return@runBlocking
+            runBlocking {
+                while (elapsed < timeoutMs) {
+                    val networkCapabilities =
+                        connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork)
+                    if (networkCapabilities != null && networkCapabilities.hasTransport(
+                            NetworkCapabilities.TRANSPORT_WIFI
+                        )
+                    ) {
+                        enableWirelessADB(contentResolver, context)
+                        return@runBlocking
+                    }
+                    delay(intervalMs)
+                    elapsed += intervalMs
                 }
-                delay(intervalMs)
-                elapsed += intervalMs
             }
         }
 
