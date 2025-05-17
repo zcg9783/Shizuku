@@ -16,7 +16,6 @@ import kotlinx.coroutines.runBlocking
 import moe.shizuku.manager.AppConstants
 import moe.shizuku.manager.BuildConfig
 import moe.shizuku.manager.ShizukuSettings
-import moe.shizuku.manager.ShizukuSettings.ADB_ROOT
 import moe.shizuku.manager.ShizukuSettings.TCPIP_PORT
 import moe.shizuku.manager.starter.Starter
 import moe.shizuku.manager.starter.StarterActivity
@@ -91,29 +90,31 @@ class AdbWirelessHelper {
         context.startActivity(intent)
     }
 
-    private fun executeAdbRootIfNeeded(
-        host: String,
-        port: Int,
-        key: AdbKey,
-        commandOutput: StringBuilder,
-        onOutput: (String) -> Unit
-    ): Boolean {
-        if (!ShizukuSettings.getPreferences().getBoolean(ADB_ROOT, false)) {
-            return false
-        }
-
-        AdbClient(host, port, key).use { client ->
-            client.connect()
-
-            val rootExecution = if (client.root()) "ADB root command executed successfully.\n"
-            else "ADB root command failed.\n"
-
-            commandOutput.append(rootExecution).append("\n")
-            onOutput(commandOutput.toString())
-            Log.d(AppConstants.TAG, "Shizuku start output chunk: $rootExecution")
-            return rootExecution.contains("successfully")
-        }
+    /*
+private fun executeAdbRootIfNeeded(
+    host: String,
+    port: Int,
+    key: AdbKey,
+    commandOutput: StringBuilder,
+    onOutput: (String) -> Unit
+): Boolean {
+    if (!ShizukuSettings.getPreferences().getBoolean(ADB_ROOT, false)) {
+        return false
     }
+
+    AdbClient(host, port, key).use { client ->
+        client.connect()
+
+        val rootExecution = if (client.root()) "ADB root command executed successfully.\n"
+        else "ADB root command failed.\n"
+
+        commandOutput.append(rootExecution).append("\n")
+        onOutput(commandOutput.toString())
+        Log.d(AppConstants.TAG, "Shizuku start output chunk: $rootExecution")
+        return rootExecution.contains("successfully")
+    }
+}
+    */
 
     private fun changeTcpipPortIfNeeded(
         host: String,
@@ -142,7 +143,11 @@ class AdbWirelessHelper {
         }
     }
 
-    private fun waitForAdbPortAvailable(host: String, port: Int, timeoutMs: Long = 15000L): Boolean {
+    private fun waitForAdbPortAvailable(
+        host: String,
+        port: Int,
+        timeoutMs: Long = 15000L
+    ): Boolean {
         val intervalMs = 300L
         var elapsed = 0L
         while (elapsed < timeoutMs) {
@@ -184,7 +189,7 @@ class AdbWirelessHelper {
 
                 val commandOutput = StringBuilder()
 
-                executeAdbRootIfNeeded(host, port, key, commandOutput, onOutput)
+//                executeAdbRootIfNeeded(host, port, key, commandOutput, onOutput)
                 var newPort: Int = -1
                 ShizukuSettings.getPreferences().getString(TCPIP_PORT, "").let {
                     if (it.isNullOrEmpty())
@@ -207,7 +212,10 @@ class AdbWirelessHelper {
                         )
                     ) {
                         if (!waitForAdbPortAvailable(host, newPort)) {
-                            Log.w(AppConstants.TAG, "Timeout waiting for ADB to listen on new port $newPort")
+                            Log.w(
+                                AppConstants.TAG,
+                                "Timeout waiting for ADB to listen on new port $newPort"
+                            )
                             onError(Exception("Timeout waiting for ADB to listen on new port $newPort"))
                             return@launch
                         }
@@ -249,7 +257,7 @@ class AdbWirelessHelper {
 
                             Starter.writeDataFiles(context, true) // Write to data with permissions
 
-                            executeAdbRootIfNeeded(host, port, key, commandOutput, onOutput)
+//                            executeAdbRootIfNeeded(host, port, key, commandOutput, onOutput)
 
                             AdbClient(host, port, key).use { fallbackClient ->
                                 fallbackClient.connect()
