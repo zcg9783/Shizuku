@@ -121,12 +121,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
                             val dialog = MaterialAlertDialogBuilder(context)
                                 .setMessage(
-                                    """
-                                     <h1>Note</h1>
-                                     <p>This feature requires <u><tt>WRITE_SECURE_SETTINGS</tt></u> permission.</p>
-                                     <h3>Warning</h3>
-                                     <p><u><tt>WRITE_SECURE_SETTINGS</tt></u> is a very sensitive permission and enable it only if you know what you're doing. I'm not responsible for whatever may happen later on.</p>
-                                     """.trimIndent().toHtml()
+                                    getString(R.string.settings_grant_note).toHtml()
                                 )
 
                             val click: DialogInterface.OnClickListener =
@@ -169,9 +164,9 @@ class SettingsFragment : PreferenceFragmentCompat() {
                                         .show()
                                 }
                             if (Shizuku.pingBinder()) {
-                                dialog.setNeutralButton("Cancel") { dialog, which -> }
-                                    .setNegativeButton("Manual", click)
-                                    .setPositiveButton("Auto") { dialog, which ->
+                                dialog.setNeutralButton(R.string.cancel) { dialog, which -> }
+                                    .setNegativeButton(R.string.manual, click)
+                                    .setPositiveButton(R.string.auto) { dialog, which ->
                                         Log.i(
                                             ShizukuSettings.NAME,
                                             "Grant manager WRITE_SECURE_SETTINGS permission"
@@ -183,8 +178,8 @@ class SettingsFragment : PreferenceFragmentCompat() {
                                         )
                                     }
                             } else {
-                                dialog.setNegativeButton("Cancel") { dialog, which -> }
-                                    .setPositiveButton("Manual", click)
+                                dialog.setNegativeButton(R.string.cancel) { dialog, which -> }
+                                    .setPositiveButton(R.string.manual, click)
                             }
                             dialog.show()
                             return@OnPreferenceChangeListener false
