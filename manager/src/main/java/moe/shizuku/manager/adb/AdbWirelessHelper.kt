@@ -20,6 +20,7 @@ import moe.shizuku.manager.ShizukuSettings.ADB_ROOT
 import moe.shizuku.manager.ShizukuSettings.TCPIP_PORT
 import moe.shizuku.manager.starter.Starter
 import moe.shizuku.manager.starter.StarterActivity
+import java.net.Socket
 
 class AdbWirelessHelper {
 
@@ -141,6 +142,22 @@ class AdbWirelessHelper {
         }
     }
 
+    private fun waitForAdbPortAvailable(host: String, port: Int, timeoutMs: Long = 15000L): Boolean {
+        val intervalMs = 300L
+        var elapsed = 0L
+        while (elapsed < timeoutMs) {
+            try {
+                Socket(host, port).use {
+                    return true
+                }
+            } catch (_: Exception) {
+                Thread.sleep(intervalMs)
+                elapsed += intervalMs
+            }
+        }
+        return false
+    }
+
     fun startShizukuViaAdb(
         context: Context,
         host: String,
@@ -189,7 +206,12 @@ class AdbWirelessHelper {
                             onOutput
                         )
                     ) {
-                        Thread.sleep(2000)
+                        if (!waitForAdbPortAvailable(host, newPort)) {
+                            Log.w(AppConstants.TAG, "Timeout waiting for ADB to listen on new port $newPort")
+                            onError(Exception("Timeout waiting for ADB to listen on new port $newPort"))
+                            return@launch
+                        }
+                        Thread.sleep(200L)
                         newPort
                     } else port
 
