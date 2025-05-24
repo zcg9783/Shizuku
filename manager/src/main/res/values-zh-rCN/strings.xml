@@ -92,6 +92,7 @@
     <string name="settings_tcpip_port_summary">在通过无线调试启动后，更改 adbd 的 TCP/IP 监听端口\n点击编辑，留空则视为禁用</string>
     <string name="permission_warning_template"><![CDATA[要允许<b>%1$s</b>%2$s吗？]]></string>
     <string name="grant_dialog_button_allow_always">始终允许</string>
+    <string name="grant_dialog_button_allow_once">允许一次</string>
     <string name="grant_dialog_button_deny">拒绝</string>
     <string name="home_terminal_title">在终端应用中使用 Shizuku</string>
     <string name="home_terminal_description">在您喜欢的终端应用中通过 Shizuku 运行命令</string>

@@ -103,6 +103,12 @@
         <item name="android:layout_marginBottom">2dp</item>
     </style>
 
+    <style name="GrantPermissionsButtons.Center">
+        <item name="android:background">@drawable/grant_permissions_buttons_center</item>
+        <item name="android:layout_marginTop">2dp</item>
+        <item name="android:layout_marginBottom">2dp</item>
+    </style>
+
     <style name="GrantPermissionsButtons.Buttom">
         <item name="android:background">@drawable/grant_permissions_buttons_bottom</item>
         <item name="android:layout_marginTop">2dp</item>

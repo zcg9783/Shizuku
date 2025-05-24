@@ -33,6 +33,10 @@
         android:id="@android:id/button1"
         style="@style/GrantPermissionsButtons.Top"
         android:text="@string/grant_dialog_button_allow_always" />
+    <TextView
+        android:id="@android:id/button2"
+        style="@style/GrantPermissionsButtons.Center"
+        android:text="@string/grant_dialog_button_allow_once" />
 
     <TextView
         android:id="@android:id/button3"
