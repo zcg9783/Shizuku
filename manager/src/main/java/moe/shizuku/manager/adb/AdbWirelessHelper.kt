@@ -219,7 +219,7 @@ private fun executeAdbRootIfNeeded(
                             onError(Exception("Timeout waiting for ADB to listen on new port $newPort"))
                             return@launch
                         }
-                        Thread.sleep(200L)
+                        Thread.sleep(1000L)
                         newPort
                     } else port
 
