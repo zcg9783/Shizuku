@@ -293,6 +293,7 @@ public class ShizukuService extends Service<ShizukuUserServiceManager, ShizukuCl
             for (ClientRecord record : records) {
                 packages.add(record.packageName);
                 record.allowed = allowed;
+                record.onetime = onetime;
                 if (record.pid == requestPid) {
                     record.dispatchRequestPermissionResult(requestCode, allowed);
                 }
