@@ -10,13 +10,10 @@ import android.app.RemoteInput
 import android.app.Service
 import android.content.Context
 import android.content.Intent
-import android.content.pm.ServiceInfo.FOREGROUND_SERVICE_TYPE_DATA_SYNC
+import android.content.pm.ServiceInfo
 import android.os.Build
-import android.os.Handler
 import android.os.IBinder
-import android.os.Looper
 import android.util.Log
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -58,12 +55,11 @@ class AdbPairingService : Service() {
         }
     }
 
-    private val handler = Handler(Looper.getMainLooper())
-    private val port = MutableLiveData<Int>()
     private var adbMdns: AdbMdns? = null
 
     private val observer = Observer<Int> { port ->
         Log.i(tag, "Pairing service port: $port")
+        if (port <= 0) return@Observer
 
         // Since the service could be killed before user finishing input,
         // we need to put the port into Intent
@@ -105,6 +101,7 @@ class AdbPairingService : Service() {
             }
             stopAction -> {
                 stopForeground(STOP_FOREGROUND_REMOVE)
+                stopSelf()
                 null
             }
             else -> {
@@ -113,7 +110,8 @@ class AdbPairingService : Service() {
         }
         if (notification != null) {
             try {
-                startForeground(notificationId, notification, FOREGROUND_SERVICE_TYPE_DATA_SYNC)
+                startForeground(notificationId, notification,
+                    ServiceInfo.FOREGROUND_SERVICE_TYPE_MANIFEST)
             } catch (e: Throwable) {
                 Log.e(tag, "startForeground failed", e)
 
@@ -129,25 +127,13 @@ class AdbPairingService : Service() {
     private fun startSearch() {
         if (started) return
         started = true
-        adbMdns = AdbMdns(this, AdbMdns.TLS_PAIRING, port).apply { start() }
-
-        if (Looper.myLooper() == Looper.getMainLooper()) {
-            port.observeForever(observer)
-        } else {
-            handler.post { port.observeForever(observer) }
-        }
+        adbMdns = AdbMdns(this, AdbMdns.TLS_PAIRING, observer).apply { start() }
     }
 
     private fun stopSearch() {
         if (!started) return
         started = false
         adbMdns?.stop()
-
-        if (Looper.myLooper() == Looper.getMainLooper()) {
-            port.removeObserver(observer)
-        } else {
-            handler.post { port.removeObserver(observer) }
-        }
     }
 
     override fun onDestroy() {
@@ -235,6 +221,7 @@ class AdbPairingService : Service() {
                 }*/
                 .build()
         )
+        stopSelf()
     }
 
     private val stopNotificationAction by unsafeLazy {

@@ -14,14 +14,14 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import moe.shizuku.manager.authorization.AuthorizationManager
 import rikka.lifecycle.Resource
-import rikka.lifecycle.activitySharedViewModels
-import rikka.lifecycle.sharedViewModels
+import rikka.lifecycle.activityViewModels
+import rikka.lifecycle.viewModels
 
 @MainThread
-fun ComponentActivity.appsViewModel() = sharedViewModels { AppsViewModel(this) }
+fun ComponentActivity.appsViewModel() = viewModels { AppsViewModel(this) }
 
 @MainThread
-fun Fragment.appsViewModel() = activitySharedViewModels { AppsViewModel(requireContext()) }
+fun Fragment.appsViewModel() = activityViewModels { AppsViewModel(requireContext()) }
 
 class AppsViewModel(context: Context) : ViewModel() {
 
@@ -31,41 +31,22 @@ class AppsViewModel(context: Context) : ViewModel() {
     private val _grantedCount = MutableLiveData<Resource<Int>>()
     val grantedCount = _grantedCount as LiveData<Resource<Int>>
 
-    fun load() {
+    fun load(onlyCount: Boolean = false) {
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 val list: MutableList<PackageInfo> = ArrayList()
                 var count = 0
                 for (pi in AuthorizationManager.getPackages()) {
                     list.add(pi)
-                    if (AuthorizationManager.granted(pi.packageName, pi.applicationInfo?.uid?:-1)) count++
+                    if (AuthorizationManager.granted(pi.packageName, pi.applicationInfo!!.uid)) count++
                 }
-                _packages.postValue(Resource.success(list))
-                _grantedCount.postValue(Resource.success(count))
-            } catch (_: CancellationException) {
-
-            } catch (e: Throwable) {
-                _packages.postValue(Resource.error(e, null))
-                _grantedCount.postValue(Resource.error(e, 0))
-            }
-        }
-    }
-
-    fun loadCount() {
-        viewModelScope.launch(Dispatchers.IO) {
-            try {
-                val list: MutableList<PackageInfo> = ArrayList()
-                val packages: MutableList<String> = ArrayList()
-                for (pi in AuthorizationManager.getPackages()) {
-                    list.add(pi)
-                    if (AuthorizationManager.granted(
-                            pi.packageName,
-                            pi.applicationInfo?.uid?:-1
-                        )
-                    ) packages.add(pi.packageName)
+                if (!onlyCount) _packages.postValue(Resource.success(list))
+                try {
+                    _grantedCount.value = Resource.success(count)
+                } catch (e: Throwable) {
+                    _grantedCount.postValue(Resource.success(count))
                 }
-                _grantedCount.postValue(Resource.success(packages.size))
-            } catch (_: CancellationException) {
+            } catch (e: CancellationException) {
 
             } catch (e: Throwable) {
                 _packages.postValue(Resource.error(e, null))

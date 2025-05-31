@@ -1,45 +1,17 @@
-buildscript {
-    apply from: 'api/manifest.gradle'
-    ext.kotlinVersion = '2.1.20'
-    repositories {
-        google()
-        mavenCentral()
-    }
-    dependencies {
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
-    }
-}
-
 plugins {
-    id 'com.android.application' version '8.10.0' apply false
-    id 'com.android.library' version '8.10.0' apply false
-    id 'org.jetbrains.kotlin.jvm' version '1.8.0' apply false
-    id 'dev.rikka.tools.autoresconfig' version '1.2.1' apply false
-    id 'dev.rikka.tools.materialthemebuilder' version '1.5.1' apply false
-    alias libs.plugins.refine apply false
+    id("idea")
 }
-
-apply plugin: 'idea'
 
 idea.module {
     excludeDirs += file('out')
 }
 
-allprojects {
-    tasks.withType(Javadoc).tap {
-        configureEach {
-            failOnError false
-            options.addStringOption('Xdoclint:none', '-quiet')
-        }
-    }
-}
-
 subprojects {
     plugins.withId("com.android.base") {
-        plugins.apply('dev.rikka.tools.refine')
-
         android {
             compileSdk = 36
+            buildToolsVersion = "36.0.0"
+            ndkVersion = "29.0.13113456"
             defaultConfig {
                 minSdk = 24
                 targetSdk = 36
@@ -48,30 +20,15 @@ subprojects {
                 sourceCompatibility = JavaVersion.VERSION_21
                 targetCompatibility = JavaVersion.VERSION_21
             }
-            buildFeatures {
-                aidl true
-            }
-        }
-    }
-    afterEvaluate {
-        if (plugins.hasPlugin('kotlin-android') || plugins.hasPlugin('org.jetbrains.kotlin.android')) {
-            kotlin {
-                jvmToolchain(21)
-            }
         }
     }
 }
 
-tasks.register('clean', Delete) {
-    delete rootProject.buildDir
-}
-
+apply from: 'api/manifest.gradle'
 def gitCommitId = 'git rev-parse --short HEAD'.execute([], project.rootDir).text.trim()
 def gitCommitCount = Integer.parseInt('git rev-list --count HEAD'.execute([], project.rootDir).text.trim())
-def baseVersionName = "${api_version_major}.5.6-fix01"
+def baseVersionName = "${api_version_major}.6.0"
 ext {
-    minSdkVersion = 24
-    targetSdkVersion = 36
     versionCode = gitCommitCount
     versionName = "${baseVersionName}.r${gitCommitCount}.${gitCommitId}"
 }

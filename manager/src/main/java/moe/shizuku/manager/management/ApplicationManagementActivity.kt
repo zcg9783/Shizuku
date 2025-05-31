@@ -2,19 +2,15 @@ package moe.shizuku.manager.management
 
 import android.os.Bundle
 import android.util.TypedValue
-import android.view.MenuItem
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView.AdapterDataObserver
-import moe.shizuku.manager.Helps
-import moe.shizuku.manager.R
 import moe.shizuku.manager.app.AppBarActivity
 import moe.shizuku.manager.databinding.AppsActivityBinding
-import moe.shizuku.manager.utils.CustomTabsHelper
 import rikka.lifecycle.Status
 import rikka.recyclerview.addEdgeSpacing
 import rikka.recyclerview.fixEdgeEffect
 import rikka.shizuku.Shizuku
-import java.util.*
+import java.util.Objects
 
 class ApplicationManagementActivity : AppBarActivity() {
 
@@ -67,7 +63,7 @@ class ApplicationManagementActivity : AppBarActivity() {
 
         adapter.registerAdapterDataObserver(object : AdapterDataObserver() {
             override fun onItemRangeChanged(positionStart: Int, itemCount: Int, payload: Any?) {
-                viewModel.loadCount()
+                viewModel.load(true)
             }
         })
 

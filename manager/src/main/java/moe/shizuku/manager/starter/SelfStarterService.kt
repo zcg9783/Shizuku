@@ -74,7 +74,9 @@ class SelfStarterService : Service(), LifecycleOwner {
 
             if (adbMdns == null) {
                 adbMdns =
-                    AdbMdns(context = this, serviceType = AdbMdns.TLS_CONNECT, port = portLive)
+                    AdbMdns(
+                        context = this, serviceType = AdbMdns.TLS_CONNECT, observer = portObserver
+                    )
             }
             adbMdns?.start()
         } else {
@@ -109,7 +111,6 @@ class SelfStarterService : Service(), LifecycleOwner {
         }
 
         adbWirelessHelper.startShizukuViaAdb(
-            context = applicationContext,
             host = host,
             port = port,
             coroutineScope = lifecycleScope,
