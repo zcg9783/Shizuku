@@ -6,7 +6,7 @@
     <string name="home_adb_title">დაიწყე კომპიუტერთან დაკავშირებით</string>
     <string name="home_status_service_version_update">ვერსია %2$, %1$&lt;br&gt;თავიდან ჩართე, რომ განაახლო %3$s ვერსიაზე</string>
     <string name="home_status_service_version">ვერსია</string>
-    <string name="home_status_service_not_running">არ მუშაობს</string>
+    <string name="home_status_service_not_running">%1$s არ მუშაობს</string>
     <string name="home_status_service_is_running">მთავარი-სტატუსი</string>
     <string name="translation_contributors">მთარგმნელები</string>
 </resources>
