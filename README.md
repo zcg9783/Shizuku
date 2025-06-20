@@ -2,22 +2,23 @@
 
 ## 免责声明
 
-此为 Shizuku 的 **分叉版本**。若您需寻找 Rikka 开发的官方 Shizuku，此处并非正确渠道。  
+此为 Shizuku 的 **分支版本**。若您需寻找 Rikka 开发的官方 Shizuku，此处并非正确渠道。  
 请访问 [**_官方仓库_**](https://github.com/RikkaApps/Shizuku)
 
 ### 本仓库的变更
 
-- 随机化 `/data/local/tmp/shizuku` 目录名称
-- 自动删除 `/data/local/tmp/shizuku_starter` 文件
-- 在 userdebug ROM 上启用 ADB root 权限
+- ~~随机化 `/data/local/tmp/shizuku` 目录名称~~
+- ~~自动删除 `/data/local/tmp/shizuku_starter` 文件~~
+- ~~在 userdebug ROM 上启用 ADB root 权限~~（**不稳定，故弃用**）
 - 支持非 Root 设备自启动
-- 通过 GitHub Actions 自动构建并发布 APK 至 GitHub Releases
+- ~~通过 GitHub Actions 自动构建并发布 APK 至 GitHub Releases~~
+- 支持自定义 ADB TCP/IP 端口（**不稳定**）
 
 ### 自启动功能用法
 
 1. 按照无线 ADB 配对流程配置 Shizuku
 2. 在 `设置` 中启用 `开机启动（无线调试）`
-   - 启用前需先授予 `WRITE_SECURE_SETTINGS` 权限（可通过 `rish` 或连接电脑调试完成）
+   - 启用前需先授予 `WRITE_SECURE_SETTINGS` 权限（可通过 `rish` 或使用电脑通过 ADB 完成 / **在 Shizuku 启动时通过 Manager 自动授权**）
    - 执行以下命令 `adb shell pm grant moe.shizuku.privileged.api android.permission.WRITE_SECURE_SETTINGS`
 
 
