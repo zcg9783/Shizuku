@@ -14,14 +14,14 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import moe.shizuku.manager.authorization.AuthorizationManager
 import rikka.lifecycle.Resource
-import rikka.lifecycle.activityViewModels
-import rikka.lifecycle.viewModels
+import rikka.lifecycle.activitySharedViewModels
+import rikka.lifecycle.sharedViewModels
 
 @MainThread
-fun ComponentActivity.appsViewModel() = viewModels { AppsViewModel(this) }
+fun ComponentActivity.appsViewModel() = sharedViewModels { AppsViewModel(this) }
 
 @MainThread
-fun Fragment.appsViewModel() = activityViewModels { AppsViewModel(requireContext()) }
+fun Fragment.appsViewModel() = activitySharedViewModels { AppsViewModel(requireContext()) }
 
 class AppsViewModel(context: Context) : ViewModel() {
 
@@ -41,12 +41,8 @@ class AppsViewModel(context: Context) : ViewModel() {
                     if (AuthorizationManager.granted(pi.packageName, pi.applicationInfo!!.uid)) count++
                 }
                 if (!onlyCount) _packages.postValue(Resource.success(list))
-                try {
-                    _grantedCount.value = Resource.success(count)
-                } catch (e: Throwable) {
-                    _grantedCount.postValue(Resource.success(count))
-                }
-            } catch (e: CancellationException) {
+                _grantedCount.postValue(Resource.success(count))
+            } catch (_: CancellationException) {
 
             } catch (e: Throwable) {
                 _packages.postValue(Resource.error(e, null))
