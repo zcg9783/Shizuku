@@ -15,6 +15,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import moe.shizuku.manager.AppConstants
 import moe.shizuku.manager.ShizukuSettings
+import moe.shizuku.manager.ShizukuSettings.ADB_ROOT
 import moe.shizuku.manager.ShizukuSettings.TCPIP_PORT
 import moe.shizuku.manager.starter.Starter
 import moe.shizuku.manager.starter.StarterActivity
@@ -90,31 +91,32 @@ class AdbWirelessHelper {
         context.startActivity(intent)
     }
 
-    /*
-private fun executeAdbRootIfNeeded(
-    host: String,
-    port: Int,
-    key: AdbKey,
-    commandOutput: StringBuilder,
-    onOutput: (String) -> Unit
-): Boolean {
-    if (!ShizukuSettings.getPreferences().getBoolean(ADB_ROOT, false)) {
-        return false
+    private fun executeAdbRootIfNeeded(
+        host: String,
+        port: Int,
+        key: AdbKey,
+        commandOutput: StringBuilder,
+        onOutput: (String) -> Unit
+    ): Boolean {
+        if (!ShizukuSettings.getPreferences().getBoolean(ADB_ROOT, false)) {
+            return false
+        }
+
+        AdbClient(host, port, key).use { client ->
+            client.connect()
+
+            var flag = false
+            client.root {
+                commandOutput.append(String(it).apply {
+                    if (contains("adbd is already running as root") || contains("restarting adbd as root")) flag = true
+                }).append("\n")
+                onOutput(commandOutput.toString())
+            }
+
+            return flag
+        }
     }
 
-    AdbClient(host, port, key).use { client ->
-        client.connect()
-
-        val rootExecution = if (client.root()) "ADB root command executed successfully.\n"
-        else "ADB root command failed.\n"
-
-        commandOutput.append(rootExecution).append("\n")
-        onOutput(commandOutput.toString())
-        Log.d(AppConstants.TAG, "Shizuku start output chunk: $rootExecution")
-        return rootExecution.contains("successfully")
-    }
-}
-    */
 
     private fun changeTcpipPortIfNeeded(
         host: String,
@@ -132,14 +134,15 @@ private fun executeAdbRootIfNeeded(
         AdbClient(host, port, key).use { client ->
             client.connect()
 
-            val tcpipExecution =
-                if (client.tcpip(newPort)) "ADB tcpip command executed successfully.\n"
-                else "ADB tcpip command failed.\n"
+            var flag = false
+            client.tcpip(newPort) {
+                commandOutput.append(String(it).apply {
+                    if (contains(Regex("restarting in TCP mode port: [0-9]*"))) flag = true
+                }).append("\n")
+                onOutput(commandOutput.toString())
+            }
 
-            commandOutput.append(tcpipExecution).append("\n")
-            onOutput(commandOutput.toString())
-            Log.d(AppConstants.TAG, "Shizuku start output chunk: $tcpipExecution")
-            return tcpipExecution.contains("successfully")
+            return flag
         }
     }
 
@@ -187,7 +190,7 @@ private fun executeAdbRootIfNeeded(
 
                 val commandOutput = StringBuilder()
 
-//                executeAdbRootIfNeeded(host, port, key, commandOutput, onOutput)
+                executeAdbRootIfNeeded(host, port, key, commandOutput, onOutput)
                 var newPort: Int = -1
                 ShizukuSettings.getPreferences().getString(TCPIP_PORT, "").let {
                     if (it.isNullOrEmpty())
@@ -217,7 +220,6 @@ private fun executeAdbRootIfNeeded(
                             onError(Exception("Timeout waiting for ADB to listen on new port $newPort"))
                             return@launch
                         }
-                        Thread.sleep(1000L)
                         newPort
                     } else port
 

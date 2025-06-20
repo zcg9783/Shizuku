@@ -30,7 +30,6 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import moe.shizuku.manager.BuildConfig
 import moe.shizuku.manager.R
 import moe.shizuku.manager.ShizukuSettings
-import moe.shizuku.manager.ShizukuSettings.ADB_ROOT
 import moe.shizuku.manager.ShizukuSettings.KEEP_START_ON_BOOT
 import moe.shizuku.manager.ShizukuSettings.KEEP_START_ON_BOOT_WIRELESS
 import moe.shizuku.manager.ShizukuSettings.TCPIP_PORT
@@ -48,7 +47,6 @@ import rikka.core.util.ClipboardUtils
 import rikka.core.util.ResourceUtils
 import rikka.html.text.HtmlCompat
 import rikka.material.app.LocaleDelegate
-import rikka.material.preference.MaterialSwitchPreference
 import rikka.recyclerview.addEdgeSpacing
 import rikka.recyclerview.fixEdgeEffect
 import rikka.shizuku.Shizuku
@@ -264,10 +262,6 @@ class SettingsFragment : PreferenceFragmentCompat() {
             translationContributorsPreference.summary = contributors
         } else {
             translationContributorsPreference.isVisible = false
-        }
-        findPreference<MaterialSwitchPreference>(ADB_ROOT)?.apply {
-            isEnabled = false
-            parent?.removePreference(this)
         }
         findPreference<EditTextPreference>(TCPIP_PORT)?.setOnBindEditTextListener {
             it.inputType = InputType.TYPE_CLASS_NUMBER

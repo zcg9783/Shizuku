@@ -14,12 +14,10 @@ import moe.shizuku.manager.adb.AdbProtocol.A_STLS
 import moe.shizuku.manager.adb.AdbProtocol.A_STLS_VERSION
 import moe.shizuku.manager.adb.AdbProtocol.A_VERSION
 import moe.shizuku.manager.adb.AdbProtocol.A_WRTE
-import moe.shizuku.manager.utils.EnvironmentUtils
 import rikka.core.util.BuildUtils
 import java.io.Closeable
 import java.io.DataInputStream
 import java.io.DataOutputStream
-import java.io.IOException
 import java.net.Socket
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
@@ -114,68 +112,64 @@ class AdbClient(private val host: String, private val port: Int, private val key
         }
     }
 
-    fun root(): Boolean {
+    fun root(listener: ((ByteArray) -> Unit)?) {
         val localId = 1
         write(A_OPEN, localId, 0, "root:")
 
-        val message = read()
-        return when (message.command) {
+        var message = read()
+        when (message.command) {
             A_OKAY -> {
-                Log.d(TAG, "ADB daemon restarting with root privileges")
-                val closeMessage = read()
-                if (closeMessage.command == A_CLSE) {
-                    write(A_CLSE, localId, closeMessage.arg0)
+                while (true) {
+                    message = read()
+                    val remoteId = message.arg0
+                    if (message.command == A_WRTE) {
+                        if (message.data_length > 0) {
+                            listener?.invoke(message.data!!)
+                        }
+                        write(A_OKAY, localId, remoteId)
+                    } else if (message.command == A_CLSE) {
+                        write(A_CLSE, localId, remoteId)
+                        break
+                    } else {
+                        error("not A_WRTE or A_CLSE")
+                    }
                 }
-                true
-            }
-
-            A_CLSE -> {
-                Log.d(TAG, "Root request was rejected")
-                write(A_CLSE, localId, message.arg0)
-                false
             }
 
             else -> {
-                Log.e(TAG, "Unexpected response to root request: ${message.command}")
-                false
+                Log.e(TAG, "not A_OKAY")
+                error("not A_OKAY")
             }
         }
     }
 
-    fun tcpip(port: Int): Boolean {
+    fun tcpip(port: Int, listener: ((ByteArray) -> Unit)?) {
         val localId = 1
         write(A_OPEN, localId, 0, "tcpip:$port")
 
-        return try {
-            val message = read()
-            when (message.command) {
-                A_OKAY -> {
-                    Log.d(TAG, "ADB daemon restarting in TCP mode port: $port")
-                    write(A_CLSE, localId, message.arg0)
-                    true
-                }
-
-                A_CLSE -> {
-                    Log.d(TAG, "Change TCP/IP port request was rejected")
-                    write(A_CLSE, localId, message.arg0)
-                    false
-                }
-
-                else -> {
-                    Log.e(
-                        TAG,
-                        "Unexpected response to change TCP/IP port request: ${message.command}"
-                    )
-                    false
+        var message = read()
+        when (message.command) {
+            A_OKAY -> {
+                while (true) {
+                    message = read()
+                    val remoteId = message.arg0
+                    if (message.command == A_WRTE) {
+                        if (message.data_length > 0) {
+                            listener?.invoke(message.data!!)
+                        }
+                        write(A_OKAY, localId, remoteId)
+                    } else if (message.command == A_CLSE) {
+                        write(A_CLSE, localId, remoteId)
+                        break
+                    } else {
+                        error("not A_WRTE or A_CLSE")
+                    }
                 }
             }
-        } catch (_: IOException) {
-            if (EnvironmentUtils.getAdbTcpPort() == port) {
-                Log.d(TAG, "ADB daemon restarted in TCP mode port: $port")
-                true
-            } else {
-                Log.e(TAG, "Unexpected response to change TCP/IP port request")
-                false
+
+            else -> {
+                Log.e(TAG, "not A_OKAY")
+                error("not A_OKAY")
             }
         }
     }
