@@ -102,7 +102,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
                     toggleBootComponent(
                         componentName,
                         KEEP_START_ON_BOOT,
-                        newValue || startOnBootPreference.isChecked
+                        newValue || startOnBootWirelessPreference.isChecked
                     )
                 } else false
             }
