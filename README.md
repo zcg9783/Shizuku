@@ -9,10 +9,9 @@
 
 - ~~随机化 `/data/local/tmp/shizuku` 目录名称~~
 - ~~自动删除 `/data/local/tmp/shizuku_starter` 文件~~
-- ~~在 userdebug ROM 上启用 ADB root 权限~~（**不稳定，故弃用**）
+- 在 userdebug ROM 上启用 ADB root 权限
 - 支持非 Root 设备自启动
-- ~~通过 GitHub Actions 自动构建并发布 APK 至 GitHub Releases~~
-- 支持自定义 ADB TCP/IP 端口（**不稳定**）
+- 支持自定义 ADB TCP/IP 端口
 
 ### 自启动功能用法
 
