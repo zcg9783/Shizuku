@@ -1,12 +1,186 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="home_adb_button_view_command">ბრძანების ნახვა</string>
-    <string name="home_adb_button_view_help">წაიკითხეთ დახმარება</string>
-    <string name="home_adb_description">არა დარუთული მოწყობილობებისთვის, Shizuku რომ ჩართო შენ გჭირდება ადბ-ს გამოყენება(საჭიროებს კომპიუტერთან კავშირს). ეს პროცესი უნდა გაიმეოროთ თქვენი მოწყობილობის ყოველ გადატვირთვაზე. გთხოვთ <b><a href="%1$s">წაიკითხოთ დახმარება</a></b>.</string>
-    <string name="home_adb_title">დაიწყე კომპიუტერთან დაკავშირებით</string>
-    <string name="home_status_service_version_update">ვერსია %2$, %1$&lt;br&gt;თავიდან ჩართე, რომ განაახლო %3$s ვერსიაზე</string>
-    <string name="home_status_service_version">ვერსია</string>
-    <string name="home_status_service_not_running">%1$s არ მუშაობს</string>
-    <string name="home_status_service_is_running">მთავარი-სტატუსი</string>
     <string name="translation_contributors">მთარგმნელები</string>
+
+    <!-- Home - Status -->
+    <string name="home_status_service_is_running">%1$s მუშაობს</string>
+    <string name="home_status_service_not_running">%1$s არ მუშაობს</string>
+    <string name="home_status_service_version">ვერსია %2$s, %1$s</string>
+    <string name="home_status_service_version_update">ვერსია %2$s, %1$s&lt;br&gt;თავიდან ჩართე, რომ განაახლო %3$s ვერსიაზე</string>
+
+    <!-- Home - Adb -->
+    <string name="home_adb_title">დაიწყე კომპიუტერთან დაკავშირება</string>
+    <string name="home_adb_description"><![CDATA[არა დარუთული მოწყობილობებისთვის, Shizuku რომ ჩართო შენ გჭირდება ადბ-ს გამოყენება(საჭიროებს კომპიუტერთან კავშირს). ეს პროცესი უნდა გაიმეოროთ თქვენი მოწყობილობის ყოველ გადატვირთვაზე. გთხოვთ <b><a href="%1$s">წაიკითხოთ დახმარება</a></b>.]]></string>
+    <string name="home_adb_button_view_help">წაიკითხეთ დახმარება</string>
+    <string name="home_adb_button_view_command">ბრძანების ნახვა</string>
+    <string name="home_adb_dialog_view_command_message"><![CDATA[<font face="monospace">%1$s</font><br><br>* სხვა დეტალებისთვის, გთხოვთ ჯერ წაიკითხეთ დახმარება.]]></string>
+    <string name="home_adb_dialog_view_command_copy_button">კოპირება</string>
+    <string name="home_adb_dialog_view_command_button_send">გაგზავნა</string>
+
+    <!-- Home - Wireless Adb -->
+    <string name="home_wireless_adb_title">დაიწყე უსადენო დებაგით</string>
+    <string name="home_wireless_adb_description"><![CDATA[Android 11 ან უფრო მაღალ ვერსიაზე, შეგიძლიათ ჩართოთ უსადენო დებაგი და დაიწყოთ Shizuku უშუალოდ მოწყობილობიდან, კომპიუტერთან დაკავშირების გარეშე.<p>ასევე, Shizuku-ს შეუძლია ავტომატურად დაიწყოს ჩატვირთვისას, თუ WRITE_SECURE_SETTINGS ნებართვა მინიჭებულია.<p>გთხოვთ, ჯერ იხილეთ ნაბიჯ-ნაბიჯ სახელმძღვანელო.]]></string>
+    <string name="home_wireless_adb_description_pre_11">Android 11-მდე, უსადენო დებაგის ჩასართავად საჭიროა კომპიუტერთან დაკავშირება.</string>
+    <string name="home_wireless_adb_view_guide_button">ნაბიჯ-ნაბიჯ სახელმძღვანელო</string>
+
+    <!-- Adb -->
+    <string name="dialog_adb_discovery">უსადენო დებაგის სერვისის ძიება</string>
+    <string name="dialog_adb_discovery_message">გთხოვთ ჩართოთ "უსადენო დებაგი" "დეველოპერის პარამეტრებში". "უსადენო დებაგი" ავტომატურად ითიშება ქსელის ცვლილებისას.\n\nგთხოვთ, არ გამორთოთ "დეველოპერის პარამეტრები" ან "USB დებაგი", წინააღმდეგ შემთხვევაში Shizuku შეჩერდება.</string>
+    <string name="dialog_adb_discovery_message_toggle_wireless_debugging">თუ ძიება დიდხანს გრძელდება, სცადეთ გამორთოთ და ჩართოთ "უსადენო დებაგი".</string>
+    <string name="dialog_adb_port">პორტი</string>
+    <string name="dialog_adb_invalid_port">პორტი უნდა იყოს მთელი რიცხვი 1-დან 65535-მდე.</string>
+    <string name="adb_pairing">დაწყვილება</string>
+    <string name="dialog_adb_pairing_title">მოწყობილობასთან დაწყვილება</string>
+    <string name="dialog_adb_pairing_discovery">დაწყვილების სერვისის ძიება</string>
+    <string name="dialog_adb_pairing_paring_code">დაწყვილების კოდი</string>
+    <string name="paring_code_is_wrong">დაწყვილების კოდი არასწორია.</string>
+    <string name="cannot_connect_port">ვერ უკავშირდება უსადენო დებაგის სერვისს.</string>
+    <string name="dialog_wireless_adb_not_enabled">უსადენო დებაგი არ არის ჩართული.\nგთხოვთ გაითვალისწინოთ, რომ Android 11-მდე უსადენო დებაგის ჩასართავად საჭიროა კომპიუტერთან დაკავშირება.</string>
+    <string name="dialog_adb_pairing_message">გთხოვთ დაიწყოთ დაწყვილება შემდეგი ნაბიჯებით: "დეველოპერის პარამეტრები" - "უსადენო დებაგი" - "დაწყვილება კოდის გამოყენებით".\n\nდაწყვილების პროცესის დაწყების შემდეგ, შეძლებთ კოდის შეყვანას.</string>
+    <string name="adb_pairing_requires_multi_window">გთხოვთ, ჯერ გადადით გაყოფილი ეკრანის რეჟიმში.</string>
+    <string name="adb_pairing_requires_multi_window_reason">სისტემა მოითხოვს, რომ დაწყვილების დიალოგი ყოველთვის ხილული იყოს, ამიტომ საჭიროა გაყოფილი ეკრანის რეჟიმი.</string>
+    <string name="adb_error_key_store">ვერ ხერხდება გასაღების გენერაცია უსადენო დებაგისთვის.\nშესაძლოა, მოწყობილობის KeyStore მექანიზმი არ მუშაობს.</string>
+    <string name="adb_pair_required">გთხოვთ, ჯერ დაწყვილების ნაბიჯი გაიარეთ.</string>
+    <string name="development_settings">დეველოპერის პარამეტრები</string>
+    <string name="notification_settings">შეტყობინების პარამეტრები</string>
+    <string name="adb_pairing_tutorial_title">Shizuku-ს დაწყვილება თქვენს მოწყობილობასთან</string>
+    <string name="adb_pairing_tutorial_content_notification">Shizuku-ს შეტყობინება დაგეხმარებათ დაწყვილების დასრულებაში.</string>
+    <string name="adb_pairing_tutorial_content_steps">შეიყვანეთ "დეველოპერის პარამეტრები" - "უსადენო დებაგი". დააჭირეთ "დაწყვილება კოდის გამოყენებით", ნახავთ ექვსნიშნა კოდს.</string>
+    <string name="adb_pairing_tutorial_content_enter_pairing_code">შეიყვანეთ კოდი შეტყობინებაში, რომ დაასრულოთ დაწყვილება.</string>
+    <string name="adb_pairing_tutorial_content_notification_blocked">დაწყვილების პროცესს სჭირდება, რომ იმოქმედოთ Shizuku-ს შეტყობინებაზე. გთხოვთ, დაუშვათ Shizuku-ს შეტყობინებების გამოქვეყნება.</string>
+    <string name="adb_pairing_tutorial_content_miui">MIUI-ს მომხმარებლებმა შეიძლება შეცვალონ შეტყობინების სტილი "Android"-ზე სისტემის პარამეტრებში.</string>
+    <string name="adb_pairing_tutorial_content_miui_2">სხვა შემთხვევაში, შესაძლოა ვერ შეძლოთ კოდის შეყვანა შეტყობინებიდან.</string>
+    <string name="adb_pairing_tutorial_content_left_is_clickable">გთხოვთ გაითვალისწინოთ, რომ მხოლოდ "უსადენო დებაგის" მარცხენა ნაწილი არის დააჭირებადი, მისი დაჭერით გაიხსნება ახალი გვერდი. მხოლოდ მარჯვენა მხარეს გადართვა არ არის საკმარისი.</string>
+    <string name="adb_pairing_tutorial_content_finish">დაბრუნდით Shizuku-ში და დაიწყეთ Shizuku.</string>
+    <string name="adb_pairing_tutorial_content_network">Shizuku-ს სჭირდება ადგილობრივ ქსელზე წვდომა. ეს კონტროლდება ქსელის ნებართვით.</string>
+    <string name="adb_pairing_tutorial_content_network_limation_not_foreground">ზოგიერთი სისტემა (მაგალითად MIUI) არ აძლევს აპებს ქსელზე წვდომის საშუალებას, თუ ისინი არ არიან ხილულ რეჟიმში, თუნდაც foreground სერვისით. ასეთ სისტემებზე გამორთეთ ენერგიის დაზოგვის ფუნქციები Shizuku-სთვის.</string>
+
+    <!-- Home - Root -->
+    <string name="home_root_title">დაწყება (დარუთული მოწყობილობებისთვის)</string>
+    <string name="home_root_description"><![CDATA[ასევე, Shizuku-ს შეუძლია ავტომატურად დაიწყოს ჩატვირთვისას. თუ არა, შეამოწმეთ, ხომ არ ზღუდავს თქვენი სისტემა ან მესამე მხარის ხელსაწყოები Shizuku-ს.<br>შეგიძლიათ იხილოთ %s.]]></string>
+    <string name="home_root_description_sui">თუ იყენებთ Magisk-ს, შეგიძლიათ სცადოთ %1$s. root მომხმარებლებისთვის, საბოლოოდ ის ჩაანაცვლებს Shizuku-ს. გაითვალისწინეთ, არსებული აპებს მცირე ცვლილება დასჭირდებათ %2$s-ს გამოსაყენებლად.</string>
+    <string name="home_root_button_start">დაწყება</string>
+    <string name="home_root_button_restart">გადატვირთვა</string>
+
+    <!-- Home - Application management -->
+    <string name="home_app_management_title">აპლიკაციების მართვა</string>
+    <plurals name="home_app_management_authorized_apps_count">
+        <item quantity="one">ავტორიზებულია %d აპლიკაცია</item>
+        <item quantity="other">ავტორიზებულია %d აპლიკაცია</item>
+    </plurals>
+    <string name="home_app_management_view_authorized_apps">დააჭირეთ ავტორიზებული აპების სამართავად</string>
+    <string name="home_app_management_empty">აპები, რომლებმაც მოითხოვეს ან გამოაცხადეს Shizuku, აქ გამოჩნდება.</string>
+
+    <!-- Home - Learn more -->
+    <string name="home_learn_more_title">Shizuku-ს შესწავლა</string>
+    <string name="home_learn_more_description">შეიტყვეთ, როგორ განავითაროთ Shizuku-სთან ერთად</string>
+
+    <!-- Home - Adb permissions limited -->
+    <string name="home_adb_is_limited_title">საჭიროა დამატებითი ნაბიჯი</string>
+    <string name="home_adb_is_limited_description">თქვენი მოწყობილობის მწარმოებელმა შეზღუდა adb ნებართვები და Shizuku-ს გამოყენება აპებში არ იმუშავებს სწორად.\n\nროგორც წესი, ეს შეზღუდვა შეიძლება მოიხსნას "დეველოპერის პარამეტრებში" გარკვეული პარამეტრების შეცვლით. დეტალებისთვის იხილეთ დახმარება.\n\nშეიძლება დაგჭირდეთ Shizuku-ს გადატვირთვა ცვლილების ძალაში შესასვლელად.</string>
+
+    <!-- Application management -->
+    <string name="app_management_dialog_adb_is_limited_title">adb ნებართვა შეზღუდულია</string>
+    <string name="app_management_dialog_adb_is_limited_message"><![CDATA[დიდი ალბათობით, თქვენი მოწყობილობის მწარმოებელი ზღუდავს adb ნებართვას.<p>შეიძლება იყოს გამოსავალი თქვენი სისტემისთვის <b><a href="%1$s">ამ დოკუმენტში</a></b>.]]></string>
+    <string name="app_management_item_summary_requires_root">* root რეჟიმში გაშვებული Shizuku-ს საჭიროებს</string>
+
+    <!-- Terminal -->
+    <string name="home_terminal_title">Shizuku-ს გამოყენება ტერმინალში</string>
+    <string name="home_terminal_description">გაუშვით ბრძანებები Shizuku-ს მეშვეობით თქვენთვის სასურველ ტერმინალში</string>
+    <string name="terminal_tutorial_1">პირველ რიგში, ექსპორტირეთ ფაილები სასურველ ადგილას. ნახავთ ორ ფაილს, %1$s და %2$s.</string>
+    <string name="terminal_tutorial_1_description">თუ არჩეულ საქაღალდეში იგივე სახელის ფაილები არსებობს, ისინი წაიშლება.\n\nექსპორტის ფუნქცია იყენებს SAF-ს (Storage Access Framework). ცნობილია, რომ MIUI არღვევს SAF-ის ფუნქციონალს. თუ იყენებთ MIUI-ს, შეიძლება დაგჭირდეთ ფაილის ამოღება Shizuku-ს apk-დან ან ჩამოტვირთვა GitHub-დან.</string>
+    <string name="terminal_export_files">ფაილების ექსპორტი</string>
+    <string name="terminal_tutorial_2">შემდეგ, გახსენით და დაარედაქტირეთ %1$s ნებისმიერ ტექსტურ რედაქტორში.</string>
+    <string name="terminal_tutorial_2_description">მაგალითად, თუ გსურთ Shizuku-ს გამოყენება %1$s-ში, უნდა შეცვალოთ %2$s %3$s-ით (%4$s არის %1$s-ის პაკეტის სახელი).</string>
+    <string name="terminal_tutorial_3">ბოლოს, გადაიტანეთ ფაილები იმ ადგილას, სადაც თქვენს ტერმინალს ექნება წვდომა, და შეძლებთ %1$s-ის გამოყენებას Shizuku-ს ბრძანებების გასაშვებად.</string>
+    <string name="terminal_tutorial_3_description">რჩევა: მიანიჭეთ %1$s-ს შესრულების უფლება და დაამატეთ %2$s-ში, რომ პირდაპირ გამოიყენოთ %1$s.</string>
+    <string name="rish_description"><![CDATA[%1$s-ის მეშვეობით, ნებისმიერ ტერმინალში შეგიძლიათ დაუკავშირდეთ და იმუშაოთ Shizuku-ს მიერ გაშვებულ shell-თან.<p>დეტალური ინფორმაციისთვის დააჭირეთ დოკუმენტს.]]></string>
+
+    <!-- Settings -->
+    <string name="settings_title">პარამეტრები</string>
+    <string name="settings_language">ენა</string>
+    <string name="settings_user_interface">გარემო</string>
+    <string name="settings_black_night_theme">შავი ღამის თემა</string>
+    <string name="settings_black_night_theme_summary">გამოიყენეთ სუფთა შავი თემა ღამის რეჟიმში</string>
+    <string name="settings_startup">ჩატვირთვა</string>
+    <string name="settings_translation_contributors">მთარგმნელები</string>
+    <string name="settings_translation">მონაწილეობა თარგმანში</string>
+    <string name="settings_translation_summary">დაგვეხმარეთ %s-ის თარგმანში თქვენს ენაზე</string>
+    <string name="settings_start_on_boot">ჩატვირთვისას დაწყება (root)</string>
+    <string name="settings_start_on_boot_wireless">ჩატვირთვისას დაწყება (უსადენო ADB)</string>
+    <string name="settings_start_on_boot_summary">root მოწყობილობებისთვის, Shizuku-ს შეუძლია ავტომატურად დაიწყოს ჩატვირთვისას</string>
+    <string name="settings_start_on_boot_wireless_summary">root-ის გარეშე მოწყობილობებისთვის, Shizuku-ს შეუძლია ავტომატურად დაიწყოს ჩატვირთვისას უსადენო ADB-ით</string>
+    <string name="settings_adb_root">ADB root (root დებაგი)</string>
+    <string name="settings_adb_root_summary">userdebug სისტემებზე, Shizuku-ს შეუძლია root დებაგით დაიწყოს ჩატვირთვისას.</string>
+    <string name="settings_tcpip_port">TCP/IP პორტი</string>
+    <string name="settings_tcpip_port_summary">უსადენო დებაგით დაწყების შემდეგ, შეცვალეთ adbd-ის TCP/IP პორტი.\nდააჭირეთ რედაქტირებას. თუ ცარიელია, ითვლება გამორთულად.</string>
+    <string name="settings_use_system_color">სისტემის თემის ფერის გამოყენება</string>
+
+    <!-- Wireless Boot -->
+    <string name="wireless_boot_enabled">უსადენო ADB ავტომატური დაწყება ჩართულია</string>
+    <string name="wireless_boot_component_error">ჩატვირთვის კომპონენტის ჩართვა ვერ მოხერხდა</string>
+    <string name="wireless_boot_permission_tooltip">უსადენო ADB-ით ჩატვირთვისას Shizuku-ს ავტომატურად დასაწყებად საჭიროა WRITE_SECURE_SETTINGS ნებართვა</string>
+    <string name="wireless_boot_wifi_required">ამ ფუნქციისთვის საჭიროა Wi-Fi კავშირი</string>
+
+    <!-- About -->
+    <string name="action_about">შესახებ</string>
+    <string name="about_view_source_code">იხილეთ წყარო კოდი %s-ზე</string>
+
+    <!-- Stop -->
+    <string name="action_stop">Shizuku-ს გაჩერება</string>
+    <string name="dialog_stop_message">Shizuku-ს სერვისი გაჩერდება.</string>
+
+    <!-- Notification -->
+    <string name="notification_channel_service_status">სერვისის დაწყების სტატუსი</string>
+    <string name="notification_service_starting">Shizuku-ს სერვისი იწყება…</string>
+    <string name="notification_service_start_failed">Shizuku-ს სერვისის დაწყება ვერ მოხერხდა.</string>
+    <string name="notification_service_start_no_root">root ნებართვის მოთხოვნა ვერ მოხერხდა.</string>
+    <string name="notification_working">მუშაობს…</string>
+    <string name="notification_channel_adb_pairing">უსადენო დებაგის დაწყვილება</string>
+    <string name="notification_adb_pairing_input_paring_code">შეიყვანეთ დაწყვილების კოდი</string>
+    <string name="notification_adb_pairing_searching_for_service_title">დაწყვილების სერვისის ძიება</string>
+    <string name="notification_adb_pairing_service_found_title">დაწყვილების სერვისი ნაპოვნია</string>
+    <string name="notification_adb_pairing_stop_searching">ძიების შეჩერება</string>
+    <string name="notification_adb_pairing_working_title">დაწყვილება მიმდინარეობს</string>
+    <string name="notification_adb_pairing_succeed_title">დაწყვილება წარმატებულია</string>
+    <string name="notification_adb_pairing_succeed_text">ახლა შეგიძლიათ დაიწყოთ Shizuku-ს სერვისი.</string>
+    <string name="notification_adb_pairing_failed_title">დაწყვილება ვერ მოხერხდა</string>
+    <string name="notification_adb_pairing_retry">თავიდან ცდა</string>
+
+    <!-- Permission related, appears in system permission UI -->
+    <string name="permission_group_label" translatable="false">Shizuku</string>
+    <string name="permission_group_description" translatable="false">@string/permission_label</string>
+    <string name="permission_label">წვდომა Shizuku-ზე</string>
+    <string name="permission_description">აპს შეუძლია გამოიყენოს Shizuku.</string>
+    <string name="permission_warning_template"><b>%1$s</b>-ს მისცეთ უფლება %2$s?</string>
+    <string name="grant_dialog_button_allow_always">ყოველთვის დაშვება</string>
+    <string name="grant_dialog_button_allow_once">ერთჯერადი დაშვება</string>
+    <string name="grant_dialog_button_deny">უარყოფა</string>
+    <string name="permission_write_secure_settings_required">ამ ფუნქციისთვის საჭიროა WRITE_SECURE_SETTINGS ნებართვა</string>
+    <string name="permission_write_secure_settings_grant_info">ეს ნებართვა შეიძლება მიენიჭოს ADB-ით შემდეგი ბრძანებით:\nadb shell pm grant moe.shizuku.manager android.permission.WRITE_SECURE_SETTINGS</string>
+    <string name="permission_missing">საჭიროა ნებართვა</string>
+    <string name="permission_disabled_feature">ფუნქცია გათიშულია ნებართვის არარსებობის გამო</string>
+
+    <!-- Starter -->
+    <string name="starter">დამწყები</string>
+    <string name="starting_root_shell" translatable="false">root shell-ის დაწყება…</string>
+    <string name="starting_on_wireless_adb" translatable="false">სერვისის დაწყება უსადენო ADB-ით…</string>
+    <string name="start_with_root_failed">სერვისის დაწყება ვერ ხერხდება, რადგან root ნებართვა არ არის მინიჭებული ან მოწყობილობა არ არის root-ული.</string>
+
+    <!-- Misc -->
+    <string name="dialog_cannot_open_browser_title">ბრაუზერის გაშვება ვერ ხერხდება</string>
+    <string name="toast_copied_to_clipboard">%s\nკოპირებულია ბუფერში.</string>
+    <string name="toast_copied_to_clipboard_with_text"><b>%s</b> კოპირებულია ბუფერში.</string>
+
+    <!-- Messages for legacy -->
+    <string name="dialog_legacy_not_support_title">%1$s არ უჭერს მხარს თანამედროვე Shizuku-ს</string>
+    <string name="dialog_legacy_not_support_message"><![CDATA[Legacy Shizuku მოძველებულია 2019 წლის მარტიდან. ასევე, ძველი Shizuku არ მუშაობს ახალ Android სისტემებზე.<p>გთხოვთ, სთხოვეთ <b>%1$s</b>-ის დეველოპერს განაახლოს აპი.]]></string>
+    <string name="dialog_requesting_legacy_title">%1$s ითხოვს ძველ Shizuku-ს</string>
+    <string name="dialog_requesting_legacy_message"><![CDATA[<b>%1$s</b>-ს აქვს თანამედროვე Shizuku-ს მხარდაჭერა, მაგრამ ითხოვს ძველ Shizuku-ს. ეს შეიძლება იყოს იმიტომ, რომ Shizuku არ მუშაობს, გთხოვთ შეამოწმოთ Shizuku აპში.<p>ძველი Shizuku მოძველებულია 2019 წლის მარტიდან.]]></string>
+    <string name="dialog_requesting_legacy_button_open_shizuku">Shizuku-ს გახსნა</string>
+
+    <string name="cancel">გაუქმება</string>
+    <string name="manual">ხელით</string>
+    <string name="auto">ავტომატურად</string>
+    <string name="settings_grant_note"><h1>შენიშვნა</h1>\n<p>ამ ფუნქციისთვის საჭიროა <u><tt>WRITE_SECURE_SETTINGS</tt></u> ნებართვა.</p>\n<h1>გაფრთხილება</h1>\n<p><u><tt>WRITE_SECURE_SETTINGS</tt></u> ძალიან მგრძნობიარე ნებართვაა და გამოიყენეთ მხოლოდ მაშინ, თუ ზუსტად იცით რას აკეთებთ. შემდგომში განვითარებულ შედეგებზე პასუხისმგებელი არ ვარ.</p></string>
 </resources>
