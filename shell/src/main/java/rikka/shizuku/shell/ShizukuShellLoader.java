@@ -3,6 +3,7 @@ package rikka.shizuku.shell;
 import android.app.ActivityManagerNative;
 import android.app.IActivityManager;
 import android.content.Intent;
+import android.content.pm.IPackageManager;
 import android.os.Binder;
 import android.os.Build;
 import android.os.Bundle;
@@ -16,10 +17,10 @@ import android.system.Os;
 import android.text.TextUtils;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Objects;
 
 import dalvik.system.BaseDexClassLoader;
-import rikka.hidden.compat.PackageManagerApis;
 import stub.dalvik.system.VMRuntimeHidden;
 
 public class ShizukuShellLoader {
@@ -125,7 +126,22 @@ public class ShizukuShellLoader {
         ShizukuShellLoader.args = args;
 
         String packageName;
-        var pkg = PackageManagerApis.getPackagesForUidNoThrow(Os.getuid());
+
+        IPackageManager packageManager = IPackageManager.Stub.asInterface(
+                ServiceManager.getService("package"));
+        ArrayList<String> pkg = new ArrayList<>();
+        try {
+            String[] pa = packageManager.getPackagesForUid(Os.getuid());
+            if (pa != null) {
+                for (String pn : pa) {
+                    if (pn != null) {
+                        pkg.add(pn);
+                    }
+                }
+            }
+        } catch (Throwable ignored) {
+        }
+
         if (pkg.size() == 1) {
             packageName = pkg.get(0);
         } else {
