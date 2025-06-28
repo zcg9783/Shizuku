@@ -187,6 +187,13 @@
             android:exported="true"
             android:multiprocess="false"
             android:permission="android.permission.INTERACT_ACROSS_USERS_FULL" />
+
+        <meta-data
+            android:name="design_width_in_dp"
+            android:value="200" />
+        <meta-data
+            android:name="design_height_in_dp"
+            android:value="240" />
     </application>
 
 </manifest>
