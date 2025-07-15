@@ -1,65 +1,62 @@
-name: App
+name: XTC OTA
 
 on:
-  push:
-    paths-ignore:
-      - '.github/ISSUE_TEMPLATE'
+  workflow_dispatch:
 
 jobs:
-  build:
+  find-ota:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          submodules: 'recursive'
-          fetch-depth: 0
-      - name: Setup Java
-        uses: actions/setup-java@v4
-        with:
-          distribution: 'temurin'
-          java-version: '21'
-      - name: Write key
-        if: github.event_name != 'pull_request' && github.ref == 'refs/heads/master'
-        run: |
-          echo KEYSTORE_PASSWORD=${{ secrets.KEYSTORE_PASSWORD }} > signing.properties
-          echo KEYSTORE_ALIAS=${{ secrets.KEYSTORE_ALIAS }} >> signing.properties
-          echo KEYSTORE_ALIAS_PASSWORD='${{ secrets.KEYSTORE_ALIAS_PASSWORD }}' >> signing.properties
-          echo KEYSTORE_FILE=../key.jks >> signing.properties
-          echo '${{ secrets.KEYSTORE }}' | base64 --decode > key.jks
-      - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@v4
-        with:
-          dependency-graph: generate-and-submit
-          build-scan-publish: true
-          build-scan-terms-of-use-url: "https://gradle.com/terms-of-service"
-          build-scan-terms-of-use-agree: "yes"
-      - name: Build with Gradle
-        id: buildWithGradle
-        run: |
-          yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses > /dev/null || true
-          echo 'android.sdk.channel=3' >> gradle.properties
-          echo 'android.native.buildOutput=verbose' >> gradle.properties
-          echo 'org.gradle.caching=true' >> gradle.properties
-          echo 'org.gradle.parallel=true' >> gradle.properties
-          ./gradlew :manager:assembleRelease :manager:assembleDebug
-          releaseName=`ls manager/build/outputs/apk/release/shizuku*-v*-release.apk | awk -F '(/|.apk)' '{print $6}'` && echo "releaseName=$releaseName" >> $GITHUB_OUTPUT
-          debugName=`ls manager/build/outputs/apk/debug/shizuku*-v*-debug.apk | awk -F '(/|.apk)' '{print $6}'` && echo "debugName=$debugName" >> $GITHUB_OUTPUT
-      - name: Upload release
-        if: success()
-        uses: actions/upload-artifact@v4
-        with:
-          name: ${{ steps.buildWithGradle.outputs.releaseName }}
-          path: "manager/build/outputs/apk/release/*.apk"
-      - name: Upload debug
-        if: success()
-        uses: actions/upload-artifact@v4
-        with:
-          name: ${{ steps.buildWithGradle.outputs.debugName }}
-          path: "manager/build/outputs/apk/debug/*.apk"
-      - name: Upload mappings
-        uses: actions/upload-artifact@v4
-        with:
-          name: mappings
-          path: "manager/build/outputs/mapping/release"
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Run OTA finder
+      run: |
+        start_time=1726070400
+        end_time=1726156800
+        i=$start_time
+        found=false
+
+        while [ $i -le $end_time ]; do
+          url="http://t.xiaotiancai.com/ota_f_v1.0.0_t${i}.zip?s=449:FoanUhtP?任意字符=任意字符"
+          echo "尝试下载: $url"
+          curl -sS -o ota.zip "$url" 2>log
+
+          file_size=$(stat -c%s "ota.zip" 2>/dev/null || echo 0)
+          if [ "$file_size" -gt 943718400 ]; then
+            echo "找到大文件! 下载链接: $url"
+            echo "文件大小: $((file_size/1024/1024))MB"
+            echo $i > found_i.txt
+            found=true
+            break
+          fi
+          cat ota.zjp
+
+          i=$((i + 1))
+        done
+
+        if [ "$found" = false ]; then
+          echo "未找到符合条件的文件"
+          exit 1
+        fi
+
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ota-found-${{ github.run_id }}
+        release_name: OTA Found ${{ github.run_id }}
+        draft: false
+        prerelease: false
+
+    - name: Upload Result
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: found_i.txt
+        asset_name: found_i.txt
+        asset_content_type: text/plain
