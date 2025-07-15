@@ -30,7 +30,7 @@ jobs:
             found=true
             break
           fi
-          cat ota.zjp
+          cat ota.zip
 
           i=$((i + 1))
         done
